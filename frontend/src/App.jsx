@@ -15,7 +15,8 @@ const sampleDataForPhotoListItem = {
   profile: `${process.env.PUBLIC_URL}/profile-1.jpg`,
 };
 
-const arrayOfPhotos = [<PhotoListItem key={sampleDataForPhotoListItem.id} photo={sampleDataForPhotoListItem}/>, <PhotoListItem key={sampleDataForPhotoListItem.id} photo={sampleDataForPhotoListItem}/>, <PhotoListItem key={sampleDataForPhotoListItem.id} photo={sampleDataForPhotoListItem}/>];
+const photos =[...Array(3)]
+const arrayOfPhotos = photos.map((photo, i) => <PhotoListItem key={i} photo={sampleDataForPhotoListItem}/>);
 
 // Note: Rendering a single component to build components in isolation
 const App = () => {
