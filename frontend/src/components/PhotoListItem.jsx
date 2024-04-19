@@ -7,7 +7,7 @@ const PhotoListItem = ({photo, toggleFavourite, likedPhotos, id, toggleModal}) =
   return (
     <div className="photo-list__item">
       <PhotoFavButton toggleFavourite={toggleFavourite} likedPhotos={likedPhotos} id={id}/>
-      <img className="photo-list__image" src={photo.urls.regular} onClick={() => toggleModal(id)}></img>
+      <img className="photo-list__image" src={photo.urls.regular} onClick={() => toggleModal(photo)}></img>
       <div className="photo-list__user-details">
         <img className="photo-list__user-profile" src={photo.user.profile}></img>
         <div className="photo-list__user-info">

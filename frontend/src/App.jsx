@@ -8,18 +8,22 @@ import PhotoDetailsModal from 'routes/PhotoDetailsModal';
 // Note: Rendering a single component to build components in isolation
 const App = () => {
   const [showModal, setShowModal] = useState(false);
-  const toggleModal = (id) => {
+  const [modalPhoto, setModalPhoto] = useState(null);
+  const toggleModal = (photo) => {
     setShowModal(true);
-    for(let photo of photos){
-      if(photo.id === id) {
-        console.log(photo);
-      }
-    }
+    setModalPhoto(photo);
   }
+  const [likedPhotos, setLikedPhotos] = useState([]);
+  const toggleFavourite = (id) => {
+    //add logic to update liked photo state, maybe add/remove to array containing liked photos?
+    const likedPhoto = likedPhotos.includes(id);
+    likedPhoto ? setLikedPhotos(prevLikedPhotos => prevLikedPhotos.filter(e => e !== id) ): setLikedPhotos(prevLikedPhotos => [...prevLikedPhotos, id]);
+  }
+
   return (
     <div className="App">
-      <HomeRoute photos={photos} topics={topics} toggleModal={toggleModal}/>
-      {showModal && <PhotoDetailsModal closeModal={() => setShowModal(false)} />}
+      <HomeRoute photos={photos} topics={topics} toggleModal={toggleModal} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite}/>
+      {showModal && <PhotoDetailsModal closeModal={() => setShowModal(false)} photo={modalPhoto} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite} toggleModal={toggleModal} photos={photos}/>}
       {/* { Array.from(Array(3)).map((_, index) => <PhotoListItem key ={index}/>) } */}
     </div>
   );

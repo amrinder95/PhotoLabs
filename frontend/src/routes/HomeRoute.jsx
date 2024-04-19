@@ -4,13 +4,7 @@ import '../styles/HomeRoute.scss';
 import TopNavigationBar from 'components/TopNavigationBar';
 import PhotoList from 'components/PhotoList';
 
-const HomeRoute = ({photos, topics, toggleModal}) => {
-  const [likedPhotos, setLikedPhotos] = useState([]);
-  const toggleFavourite = (id) => {
-    //add logic to update liked photo state, maybe add/remove to array containing liked photos?
-    const likedPhoto = likedPhotos.includes(id);
-    likedPhoto ? setLikedPhotos(prevLikedPhotos => prevLikedPhotos.filter(e => e !== id) ): setLikedPhotos(prevLikedPhotos => [...prevLikedPhotos, id]);
-  }
+const HomeRoute = ({photos, topics, toggleModal, likedPhotos, toggleFavourite}) => {
 
   return (
     <div className="home-route">
