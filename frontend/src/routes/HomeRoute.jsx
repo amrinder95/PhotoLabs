@@ -4,7 +4,7 @@ import '../styles/HomeRoute.scss';
 import TopNavigationBar from 'components/TopNavigationBar';
 import PhotoList from 'components/PhotoList';
 
-const HomeRoute = (props) => {
+const HomeRoute = ({photos, topics, handlePhotoClick}) => {
   const [likedPhotos, setLikedPhotos] = useState([]);
   const toggleFavourite = (id) => {
     //add logic to update liked photo state, maybe add/remove to array containing liked photos?
@@ -14,8 +14,8 @@ const HomeRoute = (props) => {
 
   return (
     <div className="home-route">
-      <TopNavigationBar topics={props.topics} likedPhotos={likedPhotos}/>
-      <PhotoList photos={props.photos} toggleFavourite={toggleFavourite} likedPhotos={likedPhotos}/>
+      <TopNavigationBar topics={topics} likedPhotos={likedPhotos}/>
+      <PhotoList photos={photos} toggleFavourite={toggleFavourite} likedPhotos={likedPhotos} handlePhotoClick={handlePhotoClick}/>
     </div>
   );
 };
