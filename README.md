@@ -1,20 +1,20 @@
-# react-photolabs
-The PhotoLabs project for the Web Development React course programming.
-
-# Photolabs
+# PhotoLabs
+A react-based interactive photo library. Users can view and like photos, filter by topics, and be notified if there are any liked pictures.
 
 ## Setup
 
 Install dependencies with `npm install` in each respective `/frontend` and `/backend`.
 
-## [Frontend] Running Webpack Development Server
+## Screenshots of PhotoLabs
+
+## [Frontend] Running Frontend Server
 
 ```sh
 cd frontend
 npm start
 ```
 
-## [Backend] Running Backend Servier
+## [Backend] Running Backend Server
 
 Read `backend/readme` for further setup details.
 
