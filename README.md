@@ -7,6 +7,10 @@ Install dependencies with `npm install` in each respective `/frontend` and `/bac
 
 ## Screenshots of PhotoLabs
 
+!["PhotoLabs Home"](https://github.com/amrinder95/PhotoLabs/blob/main/docs/Home.png?raw=true)
+!["PhotoLabs photo modal"](https://github.com/amrinder95/PhotoLabs/blob/main/docs/Focus-photo-modal.png?raw=true)
+!["PhotoLabs filter by topic"](https://github.com/amrinder95/PhotoLabs/blob/main/docs/Filter-by-topic.png?raw=true)
+
 ## [Frontend] Running Frontend Server
 
 ```sh
