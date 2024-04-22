@@ -66,12 +66,14 @@ function useApplicationData() {
     fetch('http://localhost:8001/api/photos')
       .then((res) => res.json())
       .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
+      .catch((err) => console.log('Error when fetching data: ', err))
   }, [])
 
   useEffect(()=> {
     fetch('http://localhost:8001/api/topics')
       .then((res) => res.json())
       .then(data => dispatch({type: ACTIONS.APP_SET_TOPIC_DATA, payload: data}))
+      .catch((err) => console.log('Error when fetching data: ', err))
   }, [])
 
   const { showModal, modalPhoto, likedPhotos, photoData, topicData } = state;
