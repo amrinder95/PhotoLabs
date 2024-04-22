@@ -1,7 +1,7 @@
 .photo-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -12,3 +12,4 @@
   flex: 0 1 30%;
   margin: 5px;
 }
+

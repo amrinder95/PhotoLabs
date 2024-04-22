@@ -1,6 +1,5 @@
 import React from "react";
 import PhotoFavButton from "./PhotoFavButton";
-
 import "../styles/PhotoListItem.scss";
 
 const PhotoListItem = ({photo, toggleFavourite, likedPhotos, id, toggleModal, isModal}) => {
