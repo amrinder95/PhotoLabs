@@ -11,14 +11,17 @@ export const ACTIONS = {
   APP_TOGGLE_MODAL: 'APP_TOGGLE_MODAL',
   PHOTO_TOGGLE_FAVOURITE: 'PHOTO_TOGGLE_FAVOURITE',
   APP_SET_PHOTO_DATA: 'APP_SET_PHOTO_DATA',
-  APP_SET_TOPIC_DATA: 'APP_SET_TOPIC_DATA'
+  APP_SET_TOPIC_DATA: 'APP_SET_TOPIC_DATA',
+  APP_SET_TOPIC: 'APP_SET_TOPIC',
+  APP_GET_PHOTOS_BY_TOPICS: 'APP_GET_PHOTOS_BY_TOPICS'
 };
 const initialState = {
   showModal: false,
   modalPhoto: null,
   likedPhotos: [],
   photoData: [],
-  topicData: []
+  topicData: [],
+  topic: null
 };
 
 function reducer(state, action) {
@@ -45,6 +48,16 @@ function reducer(state, action) {
         ...state,
         topicData: action.payload
       }
+    case ACTIONS.APP_SET_TOPIC:
+      return {
+        ...state,
+        topic: action.payload
+      }
+    case ACTIONS.APP_GET_PHOTOS_BY_TOPICS:
+      return {
+        ...state,
+        photoData: action.payload
+      }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -62,6 +75,10 @@ function useApplicationData() {
     dispatch({ type: ACTIONS.PHOTO_TOGGLE_FAVOURITE, payload: id })
   }
 
+  const handleTopicSelect = (topicId) => {
+    dispatch({ type: ACTIONS.APP_SET_TOPIC, payload: topicId})
+  }
+
   useEffect(()=> {
     fetch('http://localhost:8001/api/photos')
       .then((res) => res.json())
@@ -76,6 +93,15 @@ function useApplicationData() {
       .catch((err) => console.log('Error when fetching data: ', err))
   }, [])
 
+  useEffect(()=> {
+    if(state.topic !== null){
+      fetch(`http://localhost:8001/api/topics/photos/${state.topic}`)
+      .then((res) => res.json())
+      .then(data => dispatch({type: ACTIONS.APP_GET_PHOTOS_BY_TOPICS, payload: data}))
+      .catch((err) => console.log('Error when fetching data: ', err))
+    }
+  }, [state.topic])
+
   const { showModal, modalPhoto, likedPhotos, photoData, topicData } = state;
 
   return {
@@ -84,6 +110,7 @@ function useApplicationData() {
     likedPhotos,
     toggleModal,
     toggleFavourite,
+    handleTopicSelect,
     photoData,
     topicData
   };
