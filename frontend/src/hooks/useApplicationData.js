@@ -72,8 +72,8 @@ function useApplicationData() {
       .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
       .catch((err) => console.log('Error when fetching data: ', err))
   }, [])
-
-  useEffect(()=> { //retrieve topics
+  
+  useEffect(()=> { //retrieve topics 
     fetch('http://localhost:8001/api/topics')
       .then((res) => res.json())
       .then(data => dispatch({type: ACTIONS.APP_SET_TOPIC_DATA, payload: data}))
@@ -83,14 +83,9 @@ function useApplicationData() {
   useEffect(()=> {
     if(state.topic !== null){ //if topic is selected, retrieve photos for selected topic
       fetch(`http://localhost:8001/api/topics/photos/${state.topic}`)
-      .then((res) => res.json())
-      .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
-      .catch((err) => console.log('Error when fetching data: ', err))
-    } else { //if no topic is selected, retrieve all photos
-      fetch('http://localhost:8001/api/photos')
-      .then((res) => res.json())
-      .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
-      .catch((err) => console.log('Error when fetching data: ', err))
+        .then((res) => res.json())
+        .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
+        .catch((err) => console.log('Error when fetching data: ', err))
     }
   }, [state.topic])
 
