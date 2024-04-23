@@ -5,7 +5,8 @@ export const ACTIONS = { //Actions for app or components
   PHOTO_TOGGLE_FAVOURITE: 'PHOTO_TOGGLE_FAVOURITE',
   APP_SET_PHOTO_DATA: 'APP_SET_PHOTO_DATA',
   APP_SET_TOPIC_DATA: 'APP_SET_TOPIC_DATA',
-  APP_SET_TOPIC: 'APP_SET_TOPIC'
+  APP_SET_TOPIC: 'APP_SET_TOPIC',
+  APP_TOGGLE_LIKED_PHOTOS_MODAL: 'APP_TOGGLE_LIKED_PHOTOS_MODAL'
 };
 const initialState = { //initial state object
   showModal: false,
@@ -13,7 +14,8 @@ const initialState = { //initial state object
   likedPhotos: [],
   photoData: [],
   topicData: [],
-  topic: null
+  topic: null,
+  showLikedPhotos: false
 };
 
 function reducer(state, action) {
@@ -24,11 +26,11 @@ function reducer(state, action) {
         modalPhoto: action.payload 
       };
     case ACTIONS.PHOTO_TOGGLE_FAVOURITE: //toggle favourite photo and save to likedphotos action
-      const  id  = action.payload;
-      const likedPhoto = state.likedPhotos.includes(id);
+      const  photo  = action.payload;
+      const likedPhoto = state.likedPhotos.includes(photo);
       return {
         ...state,
-        likedPhotos: likedPhoto ? state.likedPhotos.filter(e => e !== id) : [...state.likedPhotos, id]
+        likedPhotos: likedPhoto ? state.likedPhotos.filter(e => e !== photo) : [...state.likedPhotos, photo]
       }
     case ACTIONS.APP_SET_PHOTO_DATA: //load photos action
       return {
@@ -45,6 +47,11 @@ function reducer(state, action) {
         ...state,
         topic: action.payload
       }
+    case ACTIONS.APP_TOGGLE_LIKED_PHOTOS_MODAL:
+      return {
+        ...state,
+        showLikedPhotos: action.payload > 0 ? true : false,
+      }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -58,12 +65,18 @@ function useApplicationData() {
   const toggleModal = (photo) => { 
     dispatch({ type: ACTIONS.APP_TOGGLE_MODAL, payload: photo });
   }
-  const toggleFavourite = (id) => { 
-    dispatch({ type: ACTIONS.PHOTO_TOGGLE_FAVOURITE, payload: id })
+  const toggleFavourite = (photo) => { 
+    dispatch({ type: ACTIONS.PHOTO_TOGGLE_FAVOURITE, payload: photo })
   }
 
   const handleTopicSelect = (topicId) => {
     dispatch({ type: ACTIONS.APP_SET_TOPIC, payload: topicId})
+  }
+
+  const toggleLikedPhotos = (likedPhotosLength) => {
+    dispatch({type: ACTIONS.APP_TOGGLE_LIKED_PHOTOS_MODAL, payload: likedPhotosLength })
+    console.log(likedPhotos)
+    console.log(state.showLikedPhotos)
   }
 
   useEffect(()=> { //retrieve photos 
@@ -89,15 +102,21 @@ function useApplicationData() {
     }
   }, [state.topic])
 
-  const { showModal, modalPhoto, likedPhotos, photoData, topicData } = state; //export state
+  // useEffect(()=>{
+  //   console.log(likedPhotos);
+  // }, [state.showLikedPhotos])
+
+  const { showModal, modalPhoto, likedPhotos, photoData, topicData, showLikedPhotos } = state; //export state
 
   return {
     showModal,
     modalPhoto,
     likedPhotos,
+    showLikedPhotos,
     toggleModal,
     toggleFavourite,
     handleTopicSelect,
+    toggleLikedPhotos,
     photoData,
     topicData
   };
