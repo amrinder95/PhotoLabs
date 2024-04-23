@@ -9,15 +9,12 @@ import './App.scss';
 
 
 const App = () => {
-  const {showModal, modalPhoto, toggleModal, likedPhotos, toggleFavourite, photoData, topicData, handleTopicSelect, toggleLikedPhotos, showLikedPhotos} = useApplicationData();
+  const {allPhotos, showModal, modalPhoto, toggleModal, likedPhotos, toggleFavourite, photoData, topicData, handleTopicSelect, toggleLikedPhotos, showLikedPhotos} = useApplicationData();
   return (
     <div className="App">
       <HomeRoute photos={photoData} topics={topicData} toggleModal={toggleModal} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite} isModal={showModal} handleTopicSelect={handleTopicSelect} toggleLikedPhotos={toggleLikedPhotos}/>
       {showModal && <PhotoDetailsModal closeModal={() => toggleModal(null)} isModal={showModal} modalPhoto={modalPhoto} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite} toggleModal={toggleModal} photos={photoData}/>}
-<<<<<<< HEAD
-=======
-      {showLikedPhotos && <LikedPhotosModal closeModal={() => toggleLikedPhotos(null)} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite} isModal={showLikedPhotos}/>}
->>>>>>> cyoa
+      {showLikedPhotos && <LikedPhotosModal closeModal={() => toggleLikedPhotos(null)} likedPhotos={likedPhotos} toggleFavourite={toggleFavourite} isModal={showLikedPhotos} photos={allPhotos}/>}
     </div>
   );
 };

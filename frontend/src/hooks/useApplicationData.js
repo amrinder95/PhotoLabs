@@ -6,7 +6,8 @@ export const ACTIONS = { //Actions for app or components
   APP_SET_PHOTO_DATA: 'APP_SET_PHOTO_DATA',
   APP_SET_TOPIC_DATA: 'APP_SET_TOPIC_DATA',
   APP_SET_TOPIC: 'APP_SET_TOPIC',
-  APP_TOGGLE_LIKED_PHOTOS_MODAL: 'APP_TOGGLE_LIKED_PHOTOS_MODAL'
+  APP_TOGGLE_LIKED_PHOTOS_MODAL: 'APP_TOGGLE_LIKED_PHOTOS_MODAL',
+  APP_SET_ALL_PHOTO_DATA: 'APP_SET_ALL_PHOTO_DATA'
 };
 const initialState = { //initial state object
   showModal: false,
@@ -15,7 +16,8 @@ const initialState = { //initial state object
   photoData: [],
   topicData: [],
   topic: null,
-  showLikedPhotos: false
+  showLikedPhotos: false,
+  allPhotos: []
 };
 
 function reducer(state, action) {
@@ -26,11 +28,11 @@ function reducer(state, action) {
         modalPhoto: action.payload 
       };
     case ACTIONS.PHOTO_TOGGLE_FAVOURITE: //toggle favourite photo and save to likedphotos action
-      const  photo  = action.payload;
-      const likedPhoto = state.likedPhotos.includes(photo);
+      const id  = action.payload;
+      const likedPhoto = state.likedPhotos.includes(id);
       return {
         ...state,
-        likedPhotos: likedPhoto ? state.likedPhotos.filter(e => e !== photo) : [...state.likedPhotos, photo]
+        likedPhotos: likedPhoto ? state.likedPhotos.filter(e => e !== id) : [...state.likedPhotos, id]
       }
     case ACTIONS.APP_SET_PHOTO_DATA: //load photos action
       return {
@@ -52,6 +54,11 @@ function reducer(state, action) {
         ...state,
         showLikedPhotos: action.payload > 0 ? true : false,
       }
+    case ACTIONS.APP_SET_ALL_PHOTO_DATA: 
+      return {
+        ...state,
+        allPhotos: action.payload
+      }
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -65,8 +72,8 @@ function useApplicationData() {
   const toggleModal = (photo) => { 
     dispatch({ type: ACTIONS.APP_TOGGLE_MODAL, payload: photo });
   }
-  const toggleFavourite = (photo) => { 
-    dispatch({ type: ACTIONS.PHOTO_TOGGLE_FAVOURITE, payload: photo })
+  const toggleFavourite = (id) => { 
+    dispatch({ type: ACTIONS.PHOTO_TOGGLE_FAVOURITE, payload: id })
   }
 
   const handleTopicSelect = (topicId) => {
@@ -75,14 +82,16 @@ function useApplicationData() {
 
   const toggleLikedPhotos = (likedPhotosLength) => {
     dispatch({type: ACTIONS.APP_TOGGLE_LIKED_PHOTOS_MODAL, payload: likedPhotosLength })
-    console.log(likedPhotos)
-    console.log(state.showLikedPhotos)
   }
 
   useEffect(()=> { //retrieve photos 
     fetch('http://localhost:8001/api/photos')
       .then((res) => res.json())
       .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
+      .catch((err) => console.log('Error when fetching data: ', err))
+    fetch('http://localhost:8001/api/photos')
+      .then((res) => res.json())
+      .then(data => dispatch({type: ACTIONS.APP_SET_ALL_PHOTO_DATA, payload: data}))
       .catch((err) => console.log('Error when fetching data: ', err))
   }, [])
   
@@ -94,7 +103,13 @@ function useApplicationData() {
   }, [])
 
   useEffect(()=> {
-    if(state.topic !== null){ //if topic is selected, retrieve photos for selected topic
+    if(state.topic === 6) {
+      fetch('http://localhost:8001/api/photos')
+      .then((res) => res.json())
+      .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload:data}))
+      .catch((err) => console.log('Error when fetching data: ', err))
+    }
+    if(state.topic !== null && state.topic !== 6){ //if topic is selected, retrieve photos for selected topic
       fetch(`http://localhost:8001/api/topics/photos/${state.topic}`)
         .then((res) => res.json())
         .then(data => dispatch({type: ACTIONS.APP_SET_PHOTO_DATA, payload: data}))
@@ -106,9 +121,10 @@ function useApplicationData() {
   //   console.log(likedPhotos);
   // }, [state.showLikedPhotos])
 
-  const { showModal, modalPhoto, likedPhotos, photoData, topicData, showLikedPhotos } = state; //export state
+  const { allPhotos, showModal, modalPhoto, likedPhotos, photoData, topicData, showLikedPhotos } = state; //export state
 
   return {
+    allPhotos,
     showModal,
     modalPhoto,
     likedPhotos,

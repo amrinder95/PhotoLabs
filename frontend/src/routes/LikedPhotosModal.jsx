@@ -4,7 +4,8 @@ import PhotoList from 'components/PhotoList';
 
 import '../styles/PhotoDetailsModal.scss'
 
-const LikedPhotosModal = ({closeModal, likedPhotos, toggleFavourite, isModal}) => {
+const LikedPhotosModal = ({closeModal, likedPhotos, toggleFavourite, isModal, photos}) => {
+  const likedPhotosData = photos.filter(photo => likedPhotos.includes(photo.id));
   return (
     <div className="photo-details-modal">
       <button className="photo-details-modal__close-button" onClick={closeModal}>
@@ -15,7 +16,7 @@ const LikedPhotosModal = ({closeModal, likedPhotos, toggleFavourite, isModal}) =
           <div className="photo-details-modal__header">
             <h5>Liked Photos</h5>
               <div className='photo-details-modal__images'>
-                <PhotoList photos={likedPhotos} toggleFavourite={toggleFavourite} likedPhotos={likedPhotos} isModal={isModal} />
+                <PhotoList photos={likedPhotosData} toggleFavourite={toggleFavourite} likedPhotos={likedPhotos} isModal={isModal} />
               </div>
           </div>
         </div>
